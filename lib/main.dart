@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MyApp());
@@ -123,12 +124,14 @@ final juiceList = [
   JuiceEntity(
     name: 'Besom Yellow Juice',
     image: 'https://flutter4fun.com/wp-content/uploads/2021/09/juice1.png',
+    fullImage: 'https://flutter4fun.com/wp-content/uploads/2021/09/full.png',
     price: '19.99',
     color: Color(0xFFF3BE39),
   ),
   JuiceEntity(
     name: 'Besom Orange Juice',
     image: 'https://flutter4fun.com/wp-content/uploads/2021/09/juice2.png',
+    fullImage: 'https://flutter4fun.com/wp-content/uploads/2021/09/full.png',
     price: '25.99',
     color: Color(0xFFDC691F),
   ),
@@ -137,12 +140,14 @@ final juiceList = [
 class JuiceEntity {
   final String name;
   final String image;
+  final String fullImage;
   final String price;
   final Color color;
 
   JuiceEntity({
     required this.name,
     required this.image,
+    required this.fullImage,
     required this.price,
     required this.color,
   });
@@ -246,28 +251,166 @@ class JuiceDetailsPage extends StatefulWidget {
   _JuiceDetailsPageState createState() => _JuiceDetailsPageState();
 }
 
+class SimpleRatingBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        5,
+        (index) => Icon(
+          Icons.star,
+          color: Color(0xFFFFBA00),
+          size: 18,
+        ),
+      ),
+    );
+  }
+}
+
+final List<String> reviewImages = [
+  'https://flutter4fun.com/wp-content/uploads/2021/09/1.png',
+  'https://flutter4fun.com/wp-content/uploads/2021/09/2.png',
+  'https://flutter4fun.com/wp-content/uploads/2021/09/3.png',
+  'https://flutter4fun.com/wp-content/uploads/2021/09/4.png',
+];
+final addImageUrl = 'https://flutter4fun.com/wp-content/uploads/2021/09/add.png';
+
+class ReviewsList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (_, index) => SizedBox(width: 18),
+        itemBuilder: (_, index) {
+          if (index == reviewImages.length) {
+            return Image.network(addImageUrl);
+          }
+
+          return Image.network(reviewImages[index]);
+        },
+        itemCount: reviewImages.length + 1,
+      ),
+    );
+  }
+}
+
 class _JuiceDetailsPageState extends State<JuiceDetailsPage> {
   var count = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      body: Center(
-        child: CounterWidget(
-          currentCount: count,
-          color: widget.juice.color,
-          onIncreaseClicked: () {
-            setState(() {
-              count++;
-            });
-          },
-          onDecreaseClicked: () {
-            setState(() {
-              count--;
-            });
-          },
-        ),
+      body: ListView(
+        children: [
+          AspectRatio(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final imageHeight = constraints.maxHeight * 0.7;
+                final imageHorizontalMargin = constraints.maxWidth * 0.15;
+                final imageBottomMargin = constraints.maxHeight * 0.07;
+                return Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: widget.juice.color,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(32),
+                          bottomRight: Radius.circular(32),
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: imageHorizontalMargin,
+                            right: imageHorizontalMargin,
+                            bottom: imageBottomMargin,
+                          ),
+                          child: Image.network(
+                            'https://flutter4fun.com/wp-content/uploads/2021/09/full.png',
+                            height: imageHeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(0, 26),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CounterWidget(
+                          currentCount: count,
+                          color: widget.juice.color,
+                          onIncreaseClicked: () {
+                            setState(() {
+                              count++;
+                            });
+                          },
+                          onDecreaseClicked: () {
+                            setState(() {
+                              count--;
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+            aspectRatio: 0.86,
+          ),
+          SizedBox(height: 58),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Besom Orange Juice',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SimpleRatingBar()
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Drinking Orange Juice is not only enhances health body also strengthens muscles',
+                  style: TextStyle(color: Color(0xFFB0B1B4), fontSize: 16),
+                ),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Reviews',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      'See all',
+                      style: TextStyle(
+                        color: Color(0xFFD81C33),
+                        decoration: TextDecoration.underline,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 16),
+                ReviewsList(),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
