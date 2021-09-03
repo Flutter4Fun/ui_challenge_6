@@ -353,25 +353,23 @@ class _JuiceDetailsPageState extends State<JuiceDetailsPage> {
                               ),
                             ),
                           ),
+                          margin: EdgeInsets.only(bottom: 26),
                         ),
-                        Transform.translate(
-                          offset: Offset(0, 26),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: CounterWidget(
-                              currentCount: count,
-                              color: widget.juice.color,
-                              onIncreaseClicked: () {
-                                setState(() {
-                                  count++;
-                                });
-                              },
-                              onDecreaseClicked: () {
-                                setState(() {
-                                  count--;
-                                });
-                              },
-                            ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CounterWidget(
+                            currentCount: count,
+                            color: widget.juice.color,
+                            onIncreaseClicked: () {
+                              setState(() {
+                                count++;
+                              });
+                            },
+                            onDecreaseClicked: () {
+                              setState(() {
+                                count--;
+                              });
+                            },
                           ),
                         )
                       ],
@@ -380,7 +378,7 @@ class _JuiceDetailsPageState extends State<JuiceDetailsPage> {
                 ),
                 aspectRatio: 0.86,
               ),
-              SizedBox(height: 58),
+              SizedBox(height: 32),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(
