@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(brightness: Brightness.light),
       debugShowCheckedModeBanner: false,
-      home: JuiceDetailsPage(juiceList.first),
+      home: MyHomePage(),
     );
   }
 }
@@ -41,7 +41,7 @@ class MyHomePage extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: ListView.builder(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 100),
                     itemBuilder: (context, index) {
                       final juice = juiceList[index];
                       return JuiceWidget(
@@ -121,6 +121,20 @@ class MyButton extends StatelessWidget {
 }
 
 final juiceList = [
+  JuiceEntity(
+    name: 'Besom Yellow Juice',
+    image: 'https://flutter4fun.com/wp-content/uploads/2021/09/juice1.png',
+    fullImage: 'https://flutter4fun.com/wp-content/uploads/2021/09/full.png',
+    price: '19.99',
+    color: Color(0xFFF3BE39),
+  ),
+  JuiceEntity(
+    name: 'Besom Orange Juice',
+    image: 'https://flutter4fun.com/wp-content/uploads/2021/09/juice2.png',
+    fullImage: 'https://flutter4fun.com/wp-content/uploads/2021/09/full.png',
+    price: '25.99',
+    color: Color(0xFFDC691F),
+  ),
   JuiceEntity(
     name: 'Besom Yellow Juice',
     image: 'https://flutter4fun.com/wp-content/uploads/2021/09/juice1.png',
