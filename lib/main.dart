@@ -298,13 +298,16 @@ class ReviewsList extends StatelessWidget {
 
 class _JuiceDetailsPageState extends State<JuiceDetailsPage> {
   var count = 0;
+  double bottomSectionHeight = 100;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           ListView(
+            padding: EdgeInsets.only(bottom: bottomSectionHeight),
             children: [
               AspectRatio(
                 child: LayoutBuilder(
@@ -444,6 +447,50 @@ class _JuiceDetailsPageState extends State<JuiceDetailsPage> {
               ],
             ),
           ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: bottomSectionHeight,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: '\$',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '25.99',
+                            style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 120,
+                    height: 48,
+                    child: MyButton(
+                      text: 'Buy Now',
+                      bgColor: widget.juice.color,
+                      textColor: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
